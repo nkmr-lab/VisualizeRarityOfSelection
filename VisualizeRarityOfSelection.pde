@@ -1,13 +1,13 @@
-int num_of_times  = 10000000;
+int num_of_times  = 1000000;
 
 // 実験の選択肢の数
 int num_of_choices = 4;
 
 // 実験のN数
-int num_of_trials = 1695;
+int num_of_trials = 1000; // 1695
 
 // 1%を何分割して表示するか（N数/100の値だときれいになる）
-int num_of_unit_1percent = 17; // 1695なら16.95で17
+int num_of_unit_1percent = 10; // 1000なら10, 1695なら16.95で17
 
 // それをどの大きさで表示するか
 int x_unit_size = 4;
@@ -17,6 +17,7 @@ int max_x_percent = 35;
 
 int windowHeight = 900;
 int windowWidth; // 横幅は自動で決まる
+int graphBottomMargin = 40;
 
 int[] graph_unit;
 
@@ -36,6 +37,7 @@ void setup()
   int windowWidth = (max_x_percent - min_x_percent + 1) * num_of_unit_1percent * x_unit_size;
   surface.setResizable(false);
   surface.setSize(windowWidth, windowHeight);
+  textAlign(CENTER, CENTER);
   graph_unit = new int[num_of_unit_1percent * 100 + 1];
   for (int i = 0; i < graph_unit.length; i++) graph_unit[i] = 0;
 
@@ -54,11 +56,12 @@ void draw(){
   // 軸情報を表示
   textSize(20);
   fill(0);
+  line(0, height-graphBottomMargin, width, height-graphBottomMargin);
   for (int p = min_x_percent; p <= max_x_percent; p++) {
     int x = (p - min_x_percent) * x_unit_size * num_of_unit_1percent;
-    text(int(p), x + 10, 50);
+    text(int(p), x, height-30);
     stroke(100);
-    line(x, height, x, 0);
+    line(x, height-graphBottomMargin, x, 0);
   }
 
   // 縦軸の調整のために最大値を求める
@@ -92,7 +95,7 @@ void draw(){
     // 描画するで
     if((i / num_of_unit_1percent) >= min_x_percent && (i / num_of_unit_1percent) <= max_x_percent){
       int x = (i - min_x_percent * num_of_unit_1percent) * x_unit_size;
-      rect(x, height, x_unit_size, -graph_unit[i] * ((float)height * 0.9 / maxHeight));
+      rect(x, height-graphBottomMargin, x_unit_size, -graph_unit[i] * ((float)height * 0.9 / maxHeight));
     }
     total += graph_unit[i];
   }
