@@ -4,10 +4,12 @@ int num_of_times  = 1000000;
 int num_of_choices = 4;
 
 // 実験のN数
-int num_of_trials = 1000; // 1695
+int num_of_trials = 1000;
+
+float target_percent = 30.0;
 
 // 1%を何分割して表示するか（N数/100の値だときれいになる）
-int num_of_unit_1percent = 10; // 1000なら10, 1695なら16.95で17
+int num_of_unit_1percent = 10; // 1695なら16.95で17
 
 // それをどの大きさで表示するか
 int x_unit_size = 4;
@@ -60,7 +62,9 @@ void draw(){
   for (int p = min_x_percent; p <= max_x_percent; p++) {
     int x = (p - min_x_percent) * x_unit_size * num_of_unit_1percent;
     text(int(p), x, height-30);
+
     stroke(100);
+    strokeWeight(1);
     line(x, height-graphBottomMargin, x, 0);
   }
 
@@ -100,13 +104,22 @@ void draw(){
     total += graph_unit[i];
   }
 
+  strokeWeight(3);
+  stroke(255, 0, 0);
+  int x = int((target_percent - min_x_percent) * x_unit_size * num_of_unit_1percent);
+  line(x, height-graphBottomMargin, x, 0);
+  strokeWeight(1);
+  fill(255, 0, 0, 50);
+  rect(x, 0, width-x, height-graphBottomMargin);
+
   // 結果を表示
-  textSize(128);
+  textAlign(LEFT, CENTER);
+  textSize(96);
   fill(100, 100, 255);
-  text(num_of_choices + " choices", width/2, 170);
-  text("N = " + num_of_trials, width/2, 300);
-  textSize(64);
-  text("(" + num_of_times + " times)", width/2, 380); 
+  text(num_of_choices + " choices", width/2+50, 100);
+  text("N = " + num_of_trials, width/2+50, 200);
+  textSize(48);
+  text("(" + num_of_times + " times)", width/2+50, 300); 
   // 画像として保存
   save(num_of_trials+".png");
   noLoop();
